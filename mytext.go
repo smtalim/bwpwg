@@ -10,5 +10,5 @@ func init() {
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "Hello from RubyLearning.org - Learn Go with 1000s of other participants!")
+	fmt.Fprint(w, "Hello. This is our first GO web program for Google App Engine!")
 }
