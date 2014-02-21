@@ -56,25 +56,22 @@ Upload File: <input type="file" name="file"><br />
 `
 
 func handleServe(w http.ResponseWriter, r *http.Request) {
-        // Get new BlobInfo
-	//newBlobInfo, err := blobstore.Stat(appengine.NewContext(r), appengine.BlobKey(r.FormValue("blobKey")))
-	//if err != nil {
-	//        return
-        //}
-        
         // Instantiate blobstore reader
-        reader := blobstore.NewReader(appengine.NewContext(r), appengine.BlobKey(r.FormValue("blobKey")))
+        reader := blobstore.NewReader(appengine.NewContext(r), 
+                                      appengine.BlobKey(r.FormValue("blobKey")))
         
         lat, lng, _ := getLatLng(reader)
         
-        blobstore.Delete(appengine.NewContext(r), appengine.BlobKey(r.FormValue("blobKey")))
+        blobstore.Delete(appengine.NewContext(r), 
+                         appengine.BlobKey(r.FormValue("blobKey")))
         
         if lat == "" {
                 io.WriteString(w, "Sorry but your photo has no GeoTag information...")
                 return
         }        
 
-        s := "http://maps.googleapis.com/maps/api/staticmap?sensor=false&zoom=5&size=600x300&maptype=roadmap&amp;center="
+        s := "http://maps.googleapis.com/maps/api/staticmap?sensor=false&zoom=5
+              &size=600x300&maptype=roadmap&amp;center="
         s = s + lat + "," + lng + "&markers=color:blue%7Clabel:I%7C" + lat + "," + lng
 
         img := "<img src='" + s + "' alt='map' />"
