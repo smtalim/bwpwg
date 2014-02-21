@@ -92,7 +92,8 @@ func handleUpload(w http.ResponseWriter, r *http.Request) {
                 http.Redirect(w, r, "/", http.StatusFound)
                 return
         }
-        http.Redirect(w, r, "/serve/?blobKey="+string(file[0].BlobKey), http.StatusFound)
+        http.Redirect(w, r, "/serve/?blobKey="+string(file[0].BlobKey), 
+                      http.StatusFound)
 }
 
 func getLatLng(f io.Reader) (string, string, error) {
