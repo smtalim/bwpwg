@@ -26,7 +26,8 @@ const rootForm = `
       </head>
       <body>
         <h1>String Upper</h1>
-        <p>The String Upper Service will accept a string from you and return you the Uppercase version of the original string. Have fun!</p>
+        <p>The String Upper Service will accept a string from you and 
+           return you the Uppercase version of the original string. Have fun!</p>
         <form action="/upper" method="post" accept-charset="utf-8">
 	  <input type="text" name="str" value="Type a string..." id="str">
 	  <input type="submit" value=".. and change to uppercase!">

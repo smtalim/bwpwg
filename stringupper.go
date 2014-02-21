@@ -32,7 +32,8 @@ const rootForm = `
       </head>
       <body>
         <h1>String Upper</h1>
-        <p>The String Upper Service will accept a string from you and return you the Uppercase version of the original string. Have fun!</p>
+        <p>The String Upper Service will accept a string from you and 
+           return you the Uppercase version of the original string. Have fun!</p>
         <form action="/upper" method="post" accept-charset="utf-8">
 	  <input type="text" name="str" value="Type a string..." id="str">
 	  <input type="submit" value=".. and change to uppercase!">
@@ -73,7 +74,8 @@ func GetPort() string {
 	// Set a default port if there is nothing in the environment
 	if port == "" {
 		port = "4747"
-		fmt.Println("INFO: No PORT environment variable detected, defaulting to " + port)
+		fmt.Println("INFO: No PORT environment variable detected, 
+		            defaulting to " + port)
 	}
 	return ":" + port
 }
