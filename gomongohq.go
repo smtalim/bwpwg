@@ -24,7 +24,8 @@ func main() {
 
 func handler(w http.ResponseWriter, r *http.Request) {
         // In the open command window set the following for Heroku:
-        // heroku config:set MONGOHQ_URL=mongodb://IndianGuru:password@troup.mongohq.com:10080/godata
+        // heroku config:set MONGOHQ_URL
+           =mongodb://IndianGuru:password@troup.mongohq.com:10080/godata
         uri := os.Getenv("MONGOHQ_URL")
         if uri == "" {
                 fmt.Println("no connection string provided")
@@ -48,7 +49,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
                 panic(err)
         }
 
-        fmt.Fprintf(w, "Output from a Go program on Heroku that accesses MongoDB database on MongoHQ\n\nEmail id: %s", result.Email)
+        fmt.Fprintf(w, "Output from a Go program on Heroku that accesses MongoDB
+                        database on MongoHQ\n\nEmail id: %s", result.Email)
 }
 
 // Get the Port from the environment so we can run on Heroku
@@ -57,7 +59,8 @@ func GetPort() string {
 	// Set a default port if there is nothing in the environment
 	if port == "" {
 		port = "4747"
-		fmt.Println("INFO: No PORT environment variable detected, defaulting to " + port)
+		fmt.Println("INFO: No PORT environment variable detected, 
+		            defaulting to " + port)
 	}
 	return ":" + port
 }
