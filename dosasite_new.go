@@ -12,7 +12,7 @@ func main() {
         fs := http.FileServer(http.Dir("public"))
         http.Handle("/public/", http.StripPrefix("/public/", fs))
 
-        http.HandleFunc("/", serveTemplate)
+        http.HandleFunc("/", ServeTemplate)
         
         fmt.Println("Listening...")
         err := http.ListenAndServe(GetPort(), nil)
@@ -32,7 +32,7 @@ func GetPort() string {
 	return ":" + port
 }
 
-func serveTemplate(w http.ResponseWriter, r *http.Request) {
+func ServeTemplate(w http.ResponseWriter, r *http.Request) {
         lp := path.Join("templates", "layout.html")
         fp := path.Join("templates", r.URL.Path)
 
