@@ -1,8 +1,3 @@
-//http://blog.gopheracademy.com/day-11-martini
-//https://github.com/codegangsta/go-advent-martini/blob/master/templates/list.tmpl
-//http://docs.mongohq.com/languages/golang.html
-//http://virantha.com/2013/09/29/quick-web-app-with-go-ember-js-and-mongodb/
-
 package main
 
 import (
