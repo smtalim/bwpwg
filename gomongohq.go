@@ -1,9 +1,3 @@
-//http://stackoverflow.com/questions/14018864/how-do-i-call-mongodb-crud-method-from-handler
-//http://blog.gopheracademy.com/day-11-martini
-//https://github.com/codegangsta/go-advent-martini/blob/master/templates/list.tmpl
-//http://docs.mongohq.com/languages/golang.html
-//http://virantha.com/2013/09/29/quick-web-app-with-go-ember-js-and-mongodb/
-
 package main
 
 import (
@@ -21,6 +15,11 @@ type Person struct {
 }
 
 func main() {
+	// Add a handler to handle serving static files from a specified directory
+	// The reason for using StripPrefix is that you can change the served 
+	// directory as you please, but keep the reference in HTML the same.
+	http.Handle("/stylesheets/", http.StripPrefix("/stylesheets/", http.FileServer(http.Dir("stylesheets"))))
+
 	http.HandleFunc("/", root)
         http.HandleFunc("/display", display)
         fmt.Println("listening...")
@@ -40,28 +39,7 @@ const rootForm = `
       <head>
         <meta charset="utf-8">
         <title>Your details</title>
-        <style>
-          body {
-            background-color: #C2A7F2;
-            font-family: sans-serif;
-          }
-          h2 {
-            color: #2A1959;
-            border-bottom: 2px solid #2A1959;
-          }
-          h3 {
-            color: #474B94;
-            font-size: 1.2em;
-          }
-          #footer {
-            clear: both;
-            border-top: 1px solid #2A1959;
-            text-align: left; 
-            height: 50px; 
-            font-size: 70%;
-            width: 100%;
-          }          
-        </style>        
+        <link rel="stylesheet" href="stylesheets/style.css">
       </head>
       <body>
         <h2>A Fun Go App on Heroku to access MongoDB on MongoHQ</h2>
@@ -100,7 +78,7 @@ func display(w http.ResponseWriter, r *http.Request) {
         collection := sess.DB("godata").C("user")
 
         result := Person{}
-        //err = 
+
         collection.Find(bson.M{"name": r.FormValue("name")}).One(&result)
 
         if result.Email != "" {
@@ -119,28 +97,7 @@ const displayTemplateHTML = `
     <head>
       <meta charset="utf-8">
       <title>Results</title>
-        <style>
-          body {
-            background-color: #C2A7F2;
-            font-family: sans-serif;
-          }
-          h2 {
-            color: #2A1959;
-            border-bottom: 2px solid #2A1959;
-          }
-          h3 {
-            color: #474B94;
-            font-size: 1.2em;
-          }
-          #footer {
-            clear: both;
-            border-top: 1px solid #2A1959;
-            text-align: left; 
-            height: 50px; 
-            font-size: 70%;
-            width: 100%;
-          }          
-        </style>        
+      <link rel="stylesheet" href="stylesheets/style.css">
     </head>
     <body>
       <h2>A Fun Go App on Heroku to access MongoDB on MongoHQ</h2>
@@ -163,3 +120,4 @@ func GetPort() string {
 	}
 	return ":" + port
 }
+
