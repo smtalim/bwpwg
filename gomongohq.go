@@ -1,3 +1,9 @@
+//http://stackoverflow.com/questions/14018864/how-do-i-call-mongodb-crud-method-from-handler
+//http://blog.gopheracademy.com/day-11-martini
+//https://github.com/codegangsta/go-advent-martini/blob/master/templates/list.tmpl
+//http://docs.mongohq.com/languages/golang.html
+//http://virantha.com/2013/09/29/quick-web-app-with-go-ember-js-and-mongodb/
+
 package main
 
 import (
@@ -39,18 +45,34 @@ const rootForm = `
             background-color: #C2A7F2;
             font-family: sans-serif;
           }
+          h1 {
+            color: #2A1959;
+            border-bottom: 2px solid #2A1959;
+          }
           h3 {
             color: #474B94;
             font-size: 1.2em;
           }
+          #footer {
+            clear: both;
+            border-top: 1px solid #2A1959;
+            text-align: left; 
+            height: 50px; 
+            font-size: 70%;
+            width: 100%;
+          }          
         </style>        
       </head>
       <body>
+        <h1>A Fun Go App on Heroku to access MongoDB on MongoHQ</h1>
         <h3>Enter the Name</h3>
         <form action="/display" method="post" accept-charset="utf-8">
 	  <input type="text" name="name" value="Type the Name..." id="name">
 	  <input type="submit" value=".. and query database!">
 	</form>
+        <div id="footer">
+          <p><b>@ Copyright: RubyLearning 2014</b></p>
+        </div>	
       </body>
     </html>
 `
@@ -78,16 +100,16 @@ func display(w http.ResponseWriter, r *http.Request) {
         collection := sess.DB("godata").C("user")
 
         result := Person{}
-        err = collection.Find(bson.M{"name": r.FormValue("name")}).One(&result)
-        if err != nil {
-                http.Error(w, err.Error(), http.StatusNotFound)
-        }
+        //err = 
+        collection.Find(bson.M{"name": r.FormValue("name")}).One(&result)
 
         if result.Email != "" {
-                errn := displayTemplate.Execute(w, result.Email)
+                errn := displayTemplate.Execute(w, "The email id you wanted is: " + result.Email)
                 if errn != nil {
                         http.Error(w, errn.Error(), http.StatusInternalServerError)
-                }
+                } 
+        } else {
+                displayTemplate.Execute(w, "Sorry... The email id you wanted does not exist.")
         }
 }
 
@@ -96,24 +118,37 @@ const displayTemplateHTML = `
   <html>
     <head>
       <meta charset="utf-8">
-      <link rel="stylesheet" href="/stylesheets/gomongohq.css">
       <title>Results</title>
         <style>
           body {
             background-color: #C2A7F2;
             font-family: sans-serif;
           }
+          h1 {
+            color: #2A1959;
+            border-bottom: 2px solid #2A1959;
+          }
           h3 {
             color: #474B94;
             font-size: 1.2em;
           }
+          #footer {
+            clear: both;
+            border-top: 1px solid #2A1959;
+            text-align: left; 
+            height: 50px; 
+            font-size: 70%;
+            width: 100%;
+          }          
         </style>        
     </head>
     <body>
-      <h1>Results</h1>
-      <p>The Email id that you wanted is:</p>
-      <pre>{{html .}}</pre>
+      <h1>A Fun Go App on Heroku to access MongoDB on MongoHQ</h1>
+      <p><b>{{html .}}</b></p>
       <p><a href="/">Start again!</a></p>
+      <div id="footer">
+        <p><b>@ Copyright: RubyLearning 2014</b></p>
+      </div>	
     </body>
   </html>
 `
