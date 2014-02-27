@@ -45,7 +45,7 @@ const rootForm = `
             background-color: #C2A7F2;
             font-family: sans-serif;
           }
-          h1 {
+          h2 {
             color: #2A1959;
             border-bottom: 2px solid #2A1959;
           }
@@ -64,10 +64,10 @@ const rootForm = `
         </style>        
       </head>
       <body>
-        <h1>A Fun Go App on Heroku to access MongoDB on MongoHQ</h1>
-        <h3>Enter the Name</h3>
+        <h2>A Fun Go App on Heroku to access MongoDB on MongoHQ</h2>
+        <h3>Please enter a name</h3>
         <form action="/display" method="post" accept-charset="utf-8">
-	  <input type="text" name="name" value="Type the Name..." id="name">
+	  <input type="text" name="name" value="" id="name">
 	  <input type="submit" value=".. and query database!">
 	</form>
         <div id="footer">
@@ -124,7 +124,7 @@ const displayTemplateHTML = `
             background-color: #C2A7F2;
             font-family: sans-serif;
           }
-          h1 {
+          h2 {
             color: #2A1959;
             border-bottom: 2px solid #2A1959;
           }
@@ -143,7 +143,7 @@ const displayTemplateHTML = `
         </style>        
     </head>
     <body>
-      <h1>A Fun Go App on Heroku to access MongoDB on MongoHQ</h1>
+      <h2>A Fun Go App on Heroku to access MongoDB on MongoHQ</h2>
       <p><b>{{html .}}</b></p>
       <p><a href="/">Start again!</a></p>
       <div id="footer">
