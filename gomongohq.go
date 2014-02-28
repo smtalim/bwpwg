@@ -18,7 +18,7 @@ func main() {
 	// Add a handler to handle serving static files from a specified directory
 	// The reason for using StripPrefix is that you can change the served 
 	// directory as you please, but keep the reference in HTML the same.
-	http.Handle("/stylesheets/", http.StripPrefix("/stylesheets/", http.FileServer(http.Dir("stylesheets"))))
+	//http.Handle("/stylesheets/", http.StripPrefix("/stylesheets/", http.FileServer(http.Dir("stylesheets"))))
 
 	http.HandleFunc("/", root)
         http.HandleFunc("/display", display)
@@ -39,17 +39,18 @@ const rootForm = `
       <head>
         <meta charset="utf-8">
         <title>Your details</title>
-        <link rel="stylesheet" href="stylesheets/style.css">
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.4.2/pure-min.css">
       </head>
-      <body>
+      <body style="margin: 20px;">
         <h2>A Fun Go App on Heroku to access MongoDB on MongoHQ</h2>
-        <h3>Please enter a name</h3>
-        <form action="/display" method="post" accept-charset="utf-8">
-	  <input type="text" name="name" value="" id="name">
-	  <input type="submit" value=".. and query database!">
+        <p>This simple app will fetch the email id of a person, if it's already there in the MongoDB database.</p>
+        <p>Please enter a name (example: Stefan Klaste)</p>
+        <form action="/display" method="post" accept-charset="utf-8" class="pure-form">
+          <input type="text" name="name" placeholder="name" />
+          <input type="submit" value=".. and query database!" class="pure-button pure-button-primary"/>
 	</form>
-        <div id="footer">
-          <p><b>@ Copyright: RubyLearning 2014</b></p>
+        <div>
+          <p><b>&copy; 2014 RubyLearning. All rights reserved.</b></p>
         </div>	
       </body>
     </html>
@@ -97,15 +98,15 @@ const displayTemplateHTML = `
     <head>
       <meta charset="utf-8">
       <title>Results</title>
-      <link rel="stylesheet" href="stylesheets/style.css">
+      <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.4.2/pure-min.css">
     </head>
     <body>
       <h2>A Fun Go App on Heroku to access MongoDB on MongoHQ</h2>
       <p><b>{{html .}}</b></p>
       <p><a href="/">Start again!</a></p>
-      <div id="footer">
-        <p><b>@ Copyright: RubyLearning 2014</b></p>
-      </div>	
+      <div>
+        <p><b>&copy; 2014 RubyLearning. All rights reserved.</b></p>
+      </div>
     </body>
   </html>
 `
