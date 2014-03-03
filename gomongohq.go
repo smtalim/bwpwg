@@ -15,11 +15,6 @@ type Person struct {
 }
 
 func main() {
-	// Add a handler to handle serving static files from a specified directory
-	// The reason for using StripPrefix is that you can change the served 
-	// directory as you please, but keep the reference in HTML the same.
-	//http.Handle("/stylesheets/", http.StripPrefix("/stylesheets/", http.FileServer(http.Dir("stylesheets"))))
-
 	http.HandleFunc("/", root)
         http.HandleFunc("/display", display)
         fmt.Println("listening...")
