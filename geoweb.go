@@ -26,7 +26,8 @@ func GetPort() string {
 	// Set a default port if there is nothing in the environment
 	if port == "" {
 		port = "4747"
-		fmt.Println("INFO: No PORT environment variable detected, defaulting to " + port)
+		fmt.Println("INFO: No PORT environment variable detected, 
+		             defaulting to " + port)
 	}
 	return ":" + port
 }
@@ -40,14 +41,16 @@ const rootForm = `
     <html>
       <head>
         <meta charset="utf-8">
-        <title>Accept Address</title>
+        <title>Go View</title>
+        <link rel="stylesheet" href="/stylesheets/goview.css">        
       </head>
       <body>
-        <h1>Accept Address</h1>
+        <h1><img style="margin-left: 120px;" src="images/gsv.png" alt="Go View" />GoView</h1>
+        <h2>Accept Address</h2>
         <p>Please enter your address:</p>
-        <form action="/showimage" method="post" accept-charset="utf-8">
-	  <input type="text" name="str" value="Type address..." id="str">
-	  <input type="submit" value=".. and see the image!">
+        <form style="margin-left: 120px;" action="/showimage" method="post" accept-charset="utf-8">
+          <input type="text" name="str" value="Type address..." id="str" />
+          <input type="submit" value=".. and see the image!" />
         </form>
       </body>
     </html>
@@ -63,7 +66,9 @@ func showimage(w http.ResponseWriter, r *http.Request) {
 	// it can be safely placed inside a URL query
 	// safeAddr := url.QueryEscape(addr)
         safeAddr := url.QueryEscape(addr)
-        fullUrl := fmt.Sprintf("http://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=%s", safeAddr)
+        fullUrl := fmt.Sprintf(
+          "http://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=%s",
+           safeAddr)
 
 	// For control over HTTP client headers,
 	// redirect policy, and other settings,
@@ -111,7 +116,10 @@ func showimage(w http.ResponseWriter, r *http.Request) {
 	lng, _ := res["results"][0]["geometry"]["location"]["lng"]
 	
 	// %.13f is used to convert float64 to a string
-	queryUrl := fmt.Sprintf("http://maps.googleapis.com/maps/api/streetview?sensor=false&size=600x300&location=%.13f,%.13f", lat, lng)
+	queryUrl := 
+	  fmt.Sprintf(
+	    "http://maps.googleapis.com/maps/api/streetview?sensor=false
+	            &size=600x300&location=%.13f,%.13f", lat, lng)
 
         tempErr := upperTemplate.Execute(w, queryUrl)
         if tempErr != nil {
@@ -125,10 +133,12 @@ const upperTemplateHTML = `
     <head>
       <meta charset="utf-8">
       <title>Display Image</title>
+      <link rel="stylesheet" href="/stylesheets/goview.css">              
     </head>
     <body>
-      <h3>Image at your Address</h3>
-      <img src="{{html .}}" alt="Image" />
+      <h1><img style="margin-left: 120px;" src="images/gsv.png" alt="Street View" />GoView</h1>
+      <h2>Image at your Address</h2>
+      <img style="margin-left: 120px;" src="{{html .}}" alt="Image" />
     </body>
   </html>
 `
