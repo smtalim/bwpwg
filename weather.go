@@ -137,13 +137,10 @@ func Get(query int, waitGroup *sync.WaitGroup) {
         }
          
         var f Forecast
-        err = json.Unmarshal(fbody, &f)
-        if err != nil {
-                log.Fatal(err)
-        }        
-        fmt.Printf("The Weather at %sn", addr[query])
-        fmt.Printf("Timezone = %sn", f.Timezone)
-        fmt.Printf("Temp = %.2f Celsiusn", f.Currently.Temperature)
-        fmt.Printf("Summary = %sn", f.Currently.Summary)
-        fmt.Printf("n")
+        json.Unmarshal(fbody, &f)
+
+        fmt.Println("The Weather at ", addr[query])
+        fmt.Println("Timezone = ", f.Timezone)
+        fmt.Println("Temp in Celsius = ", f.Currently.Temperature)
+        fmt.Println("Summary = ", f.Currently.Summary)
 }
