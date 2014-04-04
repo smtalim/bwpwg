@@ -297,6 +297,7 @@ const displayTemplateHTML = `
           </tbody>
         </table>
       </div>
+      <p><a href="/">Start again!</a></p>
     </div>
   </div><!-- container -->
 
