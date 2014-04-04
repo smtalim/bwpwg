@@ -214,7 +214,7 @@ func Get(query int, waitGroup *sync.WaitGroup, addr []string, f []Forecast) {
         
         // Forecast API
 	// %.13f is used to convert float64 to a string
-	url := fmt.Sprintf("https://api.forecast.io/forecast/af136ca34229cf10621b2be660651209/%.13f,%.13f?units=ca", lat, lng)
+	url := fmt.Sprintf("https://api.forecast.io/forecast/yourapikey/%.13f,%.13f?units=ca", lat, lng)
 
         resp, err := http.Get(url)
         if err != nil {
