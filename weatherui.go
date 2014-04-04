@@ -226,10 +226,7 @@ func Get(query int, waitGroup *sync.WaitGroup, addr []string, f []Forecast) {
                 log.Fatal(err)
         }
         
-        err = json.Unmarshal(fbody, &f[query])
-        if err != nil {
-                log.Fatal(err)
-        }        
+        json.Unmarshal(fbody, &f[query])
 }
 
 const displayTemplateHTML = ` 
