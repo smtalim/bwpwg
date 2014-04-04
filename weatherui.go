@@ -133,7 +133,7 @@ var displayTemplate = template.Must(template.New("display").Parse(displayTemplat
 func display(w http.ResponseWriter, r *http.Request) {
         addr := []string{r.FormValue("city1"), r.FormValue("city2"), r.FormValue("city3"), r.FormValue("city4")}
        
-        f := make([]Forecast, 4)
+        f := make([]Forecast, 4, 4)
 
         // Create a wait group to manage the goroutines
         var waitGroup sync.WaitGroup
