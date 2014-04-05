@@ -93,6 +93,24 @@ const rootForm = `
   <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
   <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
 
+  <!-- Validation
+  ================================================== -->
+  <script>
+  function validateForm()
+  {
+    var c1=document.forms["myForm"]["city1"].value;
+    var c2=document.forms["myForm"]["city2"].value;
+    var c3=document.forms["myForm"]["city3"].value;
+    var c4=document.forms["myForm"]["city4"].value;
+    if ((c1==null || c1=="") || (c2==null || c2=="") ||
+        (c3==null || c3=="") || (c4==null || c4==""))
+    {
+      alert("City Name must be filled out");
+      return false;
+    }
+  }
+  </script>
+
 </head>
 <body>
 
@@ -107,7 +125,7 @@ const rootForm = `
 
     <div class="sixteen columns">
       <p>Please enter the cities for which you want a weather forecast.</p>
-      <form action="/display" method="post" accept-charset="utf-8">
+      <form name ="myForm" action="/display" onsubmit="return validateForm()" method="post" accept-charset="utf-8">
         <!-- Label and text input -->
         <label for="regularInput1">City Name 1</label>
         <input type="text" name="city1" id="regularInput1" />
