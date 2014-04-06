@@ -9,8 +9,8 @@ import (
 	"os"
 )
 
-// Trail_Name contains information for an individual trail
-type Trail_Name struct {
+// TrailName contains information for an individual trail
+type TrailName struct {
         ID            bson.ObjectId `bson:"_id,omitempty"`
         Name          string        `bson:"name"`
         LocDesc       string        `bson:"location_desc"`
@@ -52,7 +52,7 @@ func display(w http.ResponseWriter, r *http.Request) {
 
 	collection := sess.DB("trails").C("trail_names")
 	
-        result := []Trail_Name{}
+        result := []TrailName{}
         err = collection.Find(nil).All(&result)
         if err != nil {
                 panic(err)
