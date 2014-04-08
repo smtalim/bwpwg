@@ -4,6 +4,7 @@ import (
         "fmt"
         "labix.org/v2/mgo"
         "labix.org/v2/mgo/bson"
+        "log"
         "os"
 )
  
@@ -41,13 +42,13 @@ func main() {
 	                        &Person{"Michael de Silva", "michael@mwdesilva.com"},
 	                        &Person{"Alejandro Cespedes Vicente", "cesal_vizar@hotmail.com"})
         if err != nil {
-                panic(err)
+                log.Fatal("Insert: ", err)
         }
 
         result := Person{}
         err = collection.Find(bson.M{"name": "Nishant Modak"}).One(&result)
         if err != nil {
-                panic(err)
+                log.Fatal("Find: ", err)
         }
 
         fmt.Println("Email Id:", result.Email)

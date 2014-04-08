@@ -79,8 +79,8 @@ func Get(query int, waitGroup *sync.WaitGroup) {
         // Build the request
         req, err1 := http.NewRequest("GET", fullUrl, nil)
         if err1 != nil {
-		        panic(err1)
-	    }
+		log.Fatal("NewRequest: ", err1)
+	}
 
         // For control over HTTP client headers,
         // redirect policy, and other settings,
@@ -93,7 +93,7 @@ func Get(query int, waitGroup *sync.WaitGroup) {
         // returns an HTTP response
         resp, err2 := client.Do(req)
         if err2 != nil {
-                panic(err2)
+                log.Fatal("Do: ", err2)
         }
 
         // Callers should close resp.Body
@@ -104,7 +104,7 @@ func Get(query int, waitGroup *sync.WaitGroup) {
         // Read the content into a byte array
         body, dataReadErr := ioutil.ReadAll(resp.Body)
         if dataReadErr != nil {
-                panic(dataReadErr)
+                log.Fatal("ReadAll: ", dataReadErr)
         }
 
         res := make(map[string][]map[string]map[string]map[string]interface{}, 0)
@@ -128,12 +128,12 @@ func Get(query int, waitGroup *sync.WaitGroup) {
 
         resp, err := http.Get(url)
         if err != nil {
-                log.Fatal(err)
+                log.Fatal("Get: ", err)
         }
         defer resp.Body.Close()
         fbody, err := ioutil.ReadAll(resp.Body)
         if err != nil {
-                log.Fatal(err)
+                log.Fatal("ReadAll: ", err)
         }
          
         var f Forecast

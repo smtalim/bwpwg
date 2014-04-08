@@ -5,6 +5,7 @@ import (
 	"fmt"
         "html/template"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"os"
@@ -16,7 +17,7 @@ func main() {
         fmt.Println("listening...")
         err := http.ListenAndServe(GetPort(), nil)
         if err != nil {
-                panic(err)
+                log.Fatal("ListenAndServe: ", err)
         }
 }
 
@@ -79,7 +80,7 @@ func showimage(w http.ResponseWriter, r *http.Request) {
 	// Build the request
 	req, err := http.NewRequest("GET", fullUrl, nil)
 	if err != nil {
-		panic(err)
+		log.Fatal("NewRequest: ", err)
 	}
 
 	// Send the request via a client
@@ -87,7 +88,7 @@ func showimage(w http.ResponseWriter, r *http.Request) {
 	// returns an HTTP response
 	resp, requestErr := client.Do(req)
 	if requestErr != nil {
-		panic(requestErr)
+		log.Fatal("Do: ", requestErr)
 	}
 
 	// Callers should close resp.Body
@@ -98,7 +99,7 @@ func showimage(w http.ResponseWriter, r *http.Request) {
 	// Read the content into a byte array
 	body, dataReadErr := ioutil.ReadAll(resp.Body)
 	if dataReadErr != nil {
-		panic(dataReadErr)
+		log.Fatal("ReadAll: ", dataReadErr)
 	}
 
         res := make(map[string][]map[string]map[string]map[string]interface{}, 0)

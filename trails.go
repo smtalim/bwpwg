@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"labix.org/v2/mgo"
 	"labix.org/v2/mgo/bson" // short for Binary JSON
+	"log"
 	"net/http"
 	"os"
 )
@@ -26,7 +27,7 @@ func main() {
 	fmt.Println("listening...")
 	err := http.ListenAndServe(GetPort(), nil)
 	if err != nil {
-	        panic(err)
+	        log.Fatal("ListenAndServe: ", err)
         }
 }
 
@@ -55,7 +56,7 @@ func display(w http.ResponseWriter, r *http.Request) {
         result := []TrailName{}
         err = collection.Find(nil).All(&result)
         if err != nil {
-                panic(err)
+                log.Fatal("Find: ", err)
         }
 
         displayTemplate.Execute(w, result)

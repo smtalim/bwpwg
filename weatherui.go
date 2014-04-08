@@ -55,7 +55,7 @@ func main() {
 	fmt.Println("listening...")
 	err := http.ListenAndServe(GetPort(), nil)
 	if err != nil {
-	        panic(err)
+	        log.Fatal("ListenAndServe: ", err)
         }
 }
 
@@ -186,7 +186,7 @@ func Get(query int, waitGroup *sync.WaitGroup, addr []string, f []Forecast) {
 	// Build the request
 	req, err1 := http.NewRequest("GET", fullUrl, nil)
 	if err1 != nil {
-		panic(err1)
+		log.Fatal("NewRequest: ", err1)
 	}
 
 	// For control over HTTP client headers,
@@ -200,7 +200,7 @@ func Get(query int, waitGroup *sync.WaitGroup, addr []string, f []Forecast) {
 	// returns an HTTP response
 	resp, err2 := client.Do(req)
 	if err2 != nil {
-		panic(err2)
+		log.Fatal("Do: ", err2)
 	}
 
 	// Callers should close resp.Body
@@ -211,7 +211,7 @@ func Get(query int, waitGroup *sync.WaitGroup, addr []string, f []Forecast) {
 	// Read the content into a byte array
 	body, dataReadErr := ioutil.ReadAll(resp.Body)
 	if dataReadErr != nil {
-		panic(dataReadErr)
+		log.Fatal("ReadAll: ", dataReadErr)
 	}
 
         res := make(map[string][]map[string]map[string]map[string]interface{}, 0)
@@ -236,12 +236,12 @@ func Get(query int, waitGroup *sync.WaitGroup, addr []string, f []Forecast) {
 
         resp, err := http.Get(url)
         if err != nil {
-                log.Fatal(err)
+                log.Fatal("Get: ", err)
         }
         defer resp.Body.Close()
         fbody, err := ioutil.ReadAll(resp.Body)
         if err != nil {
-                log.Fatal(err)
+                log.Fatal("ReadAll: ", err)
         }
         
         json.Unmarshal(fbody, &f[query])

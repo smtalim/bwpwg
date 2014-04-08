@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"html/template"
+	"log"
 	"net/http"
 	"net/smtp"
 	"os"
@@ -14,7 +15,7 @@ func main() {
         fmt.Println("listening...")
         err := http.ListenAndServe(GetPort(), nil)
         if err != nil {
-                panic(err)
+                log.Fatal("ListenAndServe: ", err)
         }
 }
 
@@ -89,7 +90,7 @@ func mail(w http.ResponseWriter, r *http.Request) {
         err := smtp.SendMail("smtp.gmail.com:587", auth, "satish.talim@gmail.com", 
           []string{to},[]byte(body))
         if err != nil {
-                panic(err)
+                log.Fatal("SendMail: ", err)
         } 
         
         err1 := mailTemplate.Execute(w, to)

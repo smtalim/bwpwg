@@ -5,6 +5,7 @@ import (
 	"html/template"
         "labix.org/v2/mgo"
         "labix.org/v2/mgo/bson"
+        "log"
 	"net/http"
 	"os"
 )
@@ -20,7 +21,7 @@ func main() {
         fmt.Println("listening...")
         err := http.ListenAndServe(GetPort(), nil)
         if err != nil {
-                panic(err)
+                log.Fatal("ListenAndServe: ", err)
         }
 }
 
@@ -74,7 +75,7 @@ func upper(w http.ResponseWriter, r *http.Request) {
 
         err = collection.Find(bson.M{"country": strEntered}).One(&result)
         if err != nil {
-                panic(err)
+                log.Fatal("Find: ", err)
         }
         
         err2 := upperTemplate.Execute(w, result.Capital)

@@ -5,6 +5,7 @@ import (
 	"fmt"
         "html/template"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 
@@ -70,7 +71,7 @@ func showimage(w http.ResponseWriter, r *http.Request) {
 	// Read the content into a byte array
 	body, dataReadErr := ioutil.ReadAll(resp.Body)
 	if dataReadErr != nil {
-		panic(dataReadErr)
+		log.Fatal("ReadAll: ", dataReadErr)
 	}
 
         res := make(map[string][]map[string]map[string]map[string]interface{}, 0)
