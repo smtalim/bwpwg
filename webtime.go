@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http" //package for http based web programs
 	"os"
 	"time"
@@ -12,7 +13,7 @@ func main() {
         fmt.Println("listening...")
         err := http.ListenAndServe(GetPort(), nil)
         if err != nil {
-                panic(err)
+                log.Fatal("ListenAndServe: ", err)
         }
 }
 

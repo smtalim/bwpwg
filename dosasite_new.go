@@ -3,6 +3,7 @@ package main
 import (
         "fmt"
         "html/template"
+        "log"
         "net/http"
         "os"
         "path"
@@ -17,7 +18,7 @@ func main() {
         fmt.Println("Listening...")
         err := http.ListenAndServe(GetPort(), nil)
         if err != nil {
-                panic(err)
+                log.Fatal("ListenAndServe: ", err)
         }
 }
 

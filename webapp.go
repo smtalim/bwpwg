@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 )
@@ -11,12 +12,12 @@ func main() {
         fmt.Println("listening...")
         err := http.ListenAndServe(GetPort(), nil)
         if err != nil {
-                panic(err)
+                log.Fatal("ListenAndServe: ", err)
         }
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello. This is our first Go web program!")
+	fmt.Fprintf(w, "Hello. This is our first GO web program!")
 }
 
 // Get the Port from the environment so we can run on Heroku

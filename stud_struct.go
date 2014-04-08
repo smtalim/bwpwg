@@ -1,6 +1,7 @@
 package main
 
 import (
+        "log"
         "os"
         "text/template"
 )
@@ -20,19 +21,14 @@ func main() {
 
         //parse some content and generate a template
         tmpl, err := tmpl.Parse("Hello {{.Name}}!")
-
-        //A common use of panic is to abort if a function
-        //returns an error value that we don't know how to
-        //(or want to) handle.
         if err != nil {
-                panic(err)
+                log.Fatal("Parse: ", err)
         }
 
         //merge template 'tmpl' with content of 's'
         err1 := tmpl.Execute(os.Stdout, s)
-
         if err1 != nil {
-                panic(err1)
+                log.Fatal("Execute: ", err1)
         }
 }
 

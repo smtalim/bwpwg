@@ -1,6 +1,7 @@
 package main
 
 import (
+        "log"
         "os"
         "text/template"
 )
@@ -25,14 +26,12 @@ func main() {
         t := template.New("Person template")
 
         t, err := t.Parse(tmpl)
-
         if err != nil {
-                panic(err)
+                log.Fatal("Parse: ", err)
         }
 
         err = t.Execute(os.Stdout, person)
-
         if err != nil {
-                panic(err)
+                log.Fatal("Execute: ", err)
         }
 }
