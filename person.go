@@ -28,10 +28,12 @@ func main() {
         t, err := t.Parse(tmpl)
         if err != nil {
                 log.Fatal("Parse: ", err)
+                return
         }
 
         err = t.Execute(os.Stdout, person)
         if err != nil {
                 log.Fatal("Execute: ", err)
+                return
         }
 }

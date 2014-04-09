@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 )
@@ -27,7 +28,8 @@ func main() {
         fmt.Println("listening...")
         err := http.ListenAndServe(GetPort(), nil)
         if err != nil {
-                panic(err)
+                log.Fatal("ListenAndServe: ", err)
+                return
         }
 }
 
@@ -56,7 +58,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	// Build the request
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		panic(err)
+		log.Fatal("NewRequest: ", err)
+		return
 	}
 
 	// For control over HTTP client headers,
@@ -70,7 +73,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	// returns an HTTP response
 	resp, err := client.Do(req)
 	if err != nil {
-		panic(err)
+		log.Fatal("Do: ", err)
+		return
 	}
 
 	// Callers should close resp.Body
@@ -81,7 +85,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	// Read the content into a byte array
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		panic(err)
+		log.Fatal("ReadAll: ", err)
+		return
 	}
 	//fmt.Printf("%s", body)
 
@@ -99,7 +104,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		// An error occurred while converting
 		// our JSON to an object
-		panic(err)
+		log.Fatal("Unmarshal: ", err)
 	}
 
 	fmt.Fprintf(w, "Latitude = %s and Longitude = %s", *record.Lat, *record.Lng)
