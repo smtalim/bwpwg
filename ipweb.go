@@ -3,9 +3,9 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
 )
 
@@ -45,15 +45,13 @@ func GetPort() string {
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
-        baseURL := "http://api.hostip.info/get_json.php?position=true&ip="
         ip := "198.252.210.32"
 
 	// QueryEscape escapes the ip string so
 	// it can be safely placed inside a URL query
-	// safeIp := url.QueryEscape(ip)
-	// url := baseURL + safeIp
+	safeIp := url.QueryEscape(ip)
 
-	url := baseURL + ip
+        url := fmt.Sprintf("http://api.hostip.info/get_json.php?position=true&ip=%s", safeIp)
 
 	// Build the request
 	req, err := http.NewRequest("GET", url, nil)
@@ -82,29 +80,12 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	// Defer the closing of the body
 	defer resp.Body.Close()
 
-	// Read the content into a byte array
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		log.Fatal("ReadAll: ", err)
-		return
-	}
-	//fmt.Printf("%s", body)
-
-	// We will be using the Unmarshal function
-	// to transform our JSON bytes into the
-	// appropriate structure.
-	// The Unmarshal function accepts a byte array
-	// and a reference to the object which shall be
-	// filled with the JSON data (this is simplifying,
-	// it actually accepts an interface)
-
 	// Fill the record with the data from the JSON
 	var record IpRecord
-	err = json.Unmarshal(body, &record)
-	if err != nil {
-		// An error occurred while converting
-		// our JSON to an object
-		log.Fatal("Unmarshal: ", err)
+	
+        // Use json.Decode for reading streams of JSON data
+	if err := json.NewDecoder(resp.Body).Decode(&record); err != nil {
+		log.Println(err)
 	}
 
 	fmt.Fprintf(w, "Latitude = %s and Longitude = %s", *record.Lat, *record.Lng)
