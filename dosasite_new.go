@@ -53,7 +53,7 @@ func ServeTemplate(w http.ResponseWriter, r *http.Request) {
                 return
         }
 
-        templates, _ := template.ParseFiles(lp, fp)
+        templates, err := template.ParseFiles(lp, fp)
         if err != nil {
                 fmt.Println(err)
                 http.Error(w, "500 Internal Server Error", 500)

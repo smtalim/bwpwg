@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"html/template"
-	"labix.org/v2/mgo"
-	"labix.org/v2/mgo/bson" // short for Binary JSON
+	"gopkg.in/mgo.v2"
+        "gopkg.in/mgo.v2/bson" // short for Binary JSON
 	"log"
 	"net/http"
 	"os"
@@ -28,6 +28,7 @@ func main() {
 	err := http.ListenAndServe(GetPort(), nil)
 	if err != nil {
 	        log.Fatal("ListenAndServe: ", err)
+	        return
         }
 }
 
@@ -35,8 +36,8 @@ var displayTemplate = template.Must(template.New("display").Parse(displayTemplat
 
 func display(w http.ResponseWriter, r *http.Request) {
         // In the open command window set the following for Heroku:
-        // heroku config:set MONGOHQ_URL=mongodb://IndianGuru:password@troup.mongohq.com:10059/trails
-        uri := os.Getenv("MONGOHQ_URL")
+        // heroku config:set MONGOLAB_URL=mongodb://IndianGuru:dbpassword@ds031271.mongolab.com:31271/trails
+        uri := os.Getenv("MONGOLAB_URL")
         if uri == "" {
                 fmt.Println("no connection string provided")
                 os.Exit(1)
@@ -57,6 +58,7 @@ func display(w http.ResponseWriter, r *http.Request) {
         err = collection.Find(nil).All(&result)
         if err != nil {
                 log.Fatal("Find: ", err)
+                return
         }
 
         displayTemplate.Execute(w, result)

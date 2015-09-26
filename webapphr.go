@@ -3,9 +3,8 @@ package main
 import (
 	"fmt"
 	"log"
-	"net/http" //package for http based web programs
+	"net/http"
 	"os"
-	"time"
 )
 
 func main() {
@@ -17,6 +16,10 @@ func main() {
 	}
 }
 
+func handler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hello. This is our first Go web app on Heroku!")
+}
+
 // Get the Port from the environment so we can run on Heroku
 func GetPort() string {
 	var port = os.Getenv("PORT")
@@ -26,8 +29,4 @@ func GetPort() string {
 		fmt.Println("INFO: No PORT environment variable detected, defaulting to " + port)
 	}
 	return ":" + port
-}
-
-func handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "The current time here is %s", time.Now())
 }
