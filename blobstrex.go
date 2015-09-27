@@ -70,8 +70,7 @@ func handleServe(w http.ResponseWriter, r *http.Request) {
                 return
         }        
 
-        s := "http://maps.googleapis.com/maps/api/staticmap?sensor=false&zoom=5
-              &size=600x300&maptype=roadmap&amp;center="
+        s := "http://maps.googleapis.com/maps/api/staticmap?zoom=5&size=600x300&maptype=roadmap&amp;center="
         s = s + lat + "," + lng + "&markers=color:blue%7Clabel:I%7C" + lat + "," + lng
 
         img := "<img src='" + s + "' alt='map' />"
@@ -97,50 +96,17 @@ func handleUpload(w http.ResponseWriter, r *http.Request) {
 }
 
 func getLatLng(f io.Reader) (string, string, error) {
-	//f, err := os.Open(fname)
-	//if err != nil {
-	//	return "", "", err
-	//}
-
+	// Decode parses EXIF-encoded data from f 
+	// and returns a queryable Exif object.
 	x, err := exif.Decode(f)
-	//defer f.Close()
 	if err != nil {
 		return "", "", err
 	}
-	lat, _ := x.Get("GPSLatitude")
-	latdeg_numer, _ := lat.Rat2(0)
-	latmin_numer, _ := lat.Rat2(1)
-	latsec_numer, latsec_denom := lat.Rat2(2)
-	var latitude float64 = float64(latdeg_numer) +
-		((float64(latmin_numer) +
-			((float64(latsec_numer) /
-				float64(latsec_denom)) /
-				float64(60.0))) /
-			float64(60.0))
-
-	latstr := strconv.FormatFloat(latitude, 'f', 15, 64)
-	latRef, _ := x.Get("GPSLatitudeRef")
-	if latRef.StringVal() == "S" {
-		latstr = "-" + latstr
-	}
-
-	lng, _ := x.Get("GPSLongitude")
-	lngdeg_numer, _ := lng.Rat2(0)
-	lngmin_numer, _ := lng.Rat2(1)
-	lngsec_numer, lngsec_denom := lng.Rat2(2)
-	var longitude float64 = float64(lngdeg_numer) +
-		((float64(lngmin_numer) +
-			((float64(lngsec_numer) /
-				float64(lngsec_denom)) /
-				float64(60.0))) /
-			float64(60.0))
-
-	lngstr := strconv.FormatFloat(longitude, 'f', 15, 64)
-	lngRef, _ := x.Get("GPSLongitudeRef")
-	if lngRef.StringVal() == "W" {
-		lngstr = "-" + lngstr
-	}
-
+	
+        lat, lng, _ := x.LatLong()
+        latstr := strconv.FormatFloat(lat, 'f', 15, 64)
+        lngstr := strconv.FormatFloat(lng, 'f', 15, 64)
+        
 	return latstr, lngstr, nil
 }
 
