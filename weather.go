@@ -46,6 +46,17 @@ type Forecast struct {
         Junk      string
 }
 
+type Response struct {
+        Results []struct {
+                Geometry struct {
+                        Location struct {
+                                Lat float64
+                                Lng float64
+                        }
+                }
+        }
+}
+
 func main() {
         // Create a wait group to manage the goroutines.
         var waitGroup sync.WaitGroup
@@ -80,6 +91,7 @@ func Get(query int, waitGroup *sync.WaitGroup) {
         req, err1 := http.NewRequest("GET", fullUrl, nil)
         if err1 != nil {
 		log.Fatal("NewRequest: ", err1)
+		return
 	}
 
         // For control over HTTP client headers,
@@ -94,6 +106,7 @@ func Get(query int, waitGroup *sync.WaitGroup) {
         resp, err2 := client.Do(req)
         if err2 != nil {
                 log.Fatal("Do: ", err2)
+                return
         }
 
         // Callers should close resp.Body
@@ -101,39 +114,37 @@ func Get(query int, waitGroup *sync.WaitGroup) {
         // Defer the closing of the body
         defer resp.Body.Close()
 
-        // Read the content into a byte array
-        body, dataReadErr := ioutil.ReadAll(resp.Body)
-        if dataReadErr != nil {
-                log.Fatal("ReadAll: ", dataReadErr)
+        var res Response
+
+        // We generate the latitude and longitude using "The Google Geocoding API".
+        // Geocoding is the process of converting an address (like 
+        // "1600 Amphitheatre Parkway, Mountain View, CA") into its geographic
+        // coordinates (like latitude 37.423021 and longitude -122.083739).
+        // Use json.Decode or json.Encode for reading or writing streams of JSON data
+        if err := json.NewDecoder(resp.Body).Decode(&res); err != nil {
+                log.Println(err)
         }
 
-        res := make(map[string][]map[string]map[string]map[string]interface{}, 0)
-
-        // We will be using the Unmarshal function
-        // to transform our JSON bytes into the
-        // appropriate structure.
-        // The Unmarshal function accepts a byte array
-        // and a reference to the object which shall be
-        // filled with the JSON data (this is simplifying,
-        // it actually accepts an interface)
-        json.Unmarshal(body, &res)
-        
         // lat, lng as float64
-        lat, _ := res["results"][0]["geometry"]["location"]["lat"]
-        lng, _ := res["results"][0]["geometry"]["location"]["lng"]
+        lat := res.Results[0].Geometry.Location.Lat
+        lng := res.Results[0].Geometry.Location.Lng        
+
 
         // Forecast API
         // %.13f is used to convert float64 to a string
+        // Remember to get youw own apikey and replace it in the line below
         url := fmt.Sprintf("https://api.forecast.io/forecast/yourapikey/%.13f,%.13f?units=ca", lat, lng)
 
         resp, err := http.Get(url)
         if err != nil {
                 log.Fatal("Get: ", err)
+                return
         }
         defer resp.Body.Close()
         fbody, err := ioutil.ReadAll(resp.Body)
         if err != nil {
                 log.Fatal("ReadAll: ", err)
+                return
         }
          
         var f Forecast
