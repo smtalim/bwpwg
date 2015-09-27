@@ -129,7 +129,6 @@ func Get(query int, waitGroup *sync.WaitGroup) {
         lat := res.Results[0].Geometry.Location.Lat
         lng := res.Results[0].Geometry.Location.Lng        
 
-
         // Forecast API
         // %.13f is used to convert float64 to a string
         // Remember to get youw own apikey and replace it in the line below

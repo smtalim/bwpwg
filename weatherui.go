@@ -48,6 +48,17 @@ type Forecast struct {
 	Junk      string
 }
 
+type Response struct {
+        Results []struct {
+                Geometry struct {
+                        Location struct {
+                                Lat float64
+                                Lng float64
+                        }
+                }
+        }
+}
+
 func main() {
         http.Handle("/stylesheets/", http.StripPrefix("/stylesheets/", http.FileServer(http.Dir("stylesheets"))))
         http.HandleFunc("/", handler)
@@ -208,27 +219,20 @@ func Get(query int, waitGroup *sync.WaitGroup, addr []string, f []Forecast) {
 	// Defer the closing of the body
 	defer resp.Body.Close()
 
-	// Read the content into a byte array
-	body, dataReadErr := ioutil.ReadAll(resp.Body)
-	if dataReadErr != nil {
-		log.Fatal("ReadAll: ", dataReadErr)
-	}
+        var res Response
 
-        res := make(map[string][]map[string]map[string]map[string]interface{}, 0)
+        // We generate the latitude and longitude using "The Google Geocoding API".
+        // Geocoding is the process of converting an address (like 
+        // "1600 Amphitheatre Parkway, Mountain View, CA") into its geographic
+        // coordinates (like latitude 37.423021 and longitude -122.083739).
+        // Use json.Decode or json.Encode for reading or writing streams of JSON data
+        if err := json.NewDecoder(resp.Body).Decode(&res); err != nil {
+                log.Println(err)
+        }
 
-	// We will be using the Unmarshal function
-	// to transform our JSON bytes into the
-	// appropriate structure.
-	// The Unmarshal function accepts a byte array
-	// and a reference to the object which shall be
-	// filled with the JSON data (this is simplifying,
-	// it actually accepts an interface)
-	json.Unmarshal(body, &res)
-        
         // lat, lng as float64
-	lat, _ := res["results"][0]["geometry"]["location"]["lat"]
-	lng, _ := res["results"][0]["geometry"]["location"]["lng"]
-
+        lat := res.Results[0].Geometry.Location.Lat
+        lng := res.Results[0].Geometry.Location.Lng        
         
         // Forecast API
 	// %.13f is used to convert float64 to a string
